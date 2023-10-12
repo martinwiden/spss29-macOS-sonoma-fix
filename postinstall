@@ -1,0 +1,31 @@
+#!/bin/zsh
+
+# Define the source file and destination path
+SOURCE_FILE="/tmp/libplatdep.dylib"
+SPSS_PATH="/Applications/IBM SPSS Statistics/SPSS Statistics.app/Contents/lib/"
+PATH_TO_NEWFILE="/Applications/IBM SPSS Statistics/SPSS Statistics.app/Contents/lib/libplatdep.dylib"
+
+# Check if the destination path exists
+if [ ! -d $SPSS_PATH ]; then
+    print "Destination path does not exist: $SPSS_PATH"
+    exit 1
+fi
+
+# Check if source file exists
+if [ ! -e $SOURCE_FILE ]; then
+    print "Unable to find $SOURCE_FILE"
+    exit 2
+fi
+
+# Move the file to the destination
+if ! /bin/mv $SOURCE_FILE $SPSS_PATH; then
+    print "Failed to move file"
+    exit 3
+fi
+print "File move to $SPSS_PATH" 
+
+# Change permissions on the file in the new destination
+if ! /bin/chmod 755 $PATH_TO_NEWFILE; then
+    print "Failed to change permissions on $PATH_TO_NEWFILE"
+    exit 4
+fi
